@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "543380754432",
+    "project_id": "timesheet-3d7d6",
+    "storage_bucket": "timesheet-3d7d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543380754432:android:04d1d88b37e5523f47c8e5",
+        "android_client_info": {
+          "package_name": "com.mnadeemak.timesheet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543380754432-jnh4gdspl7jdvb9nic98gofiv0hrd4o9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjrUQPSbmdNu8QQEVijeEAJaw3-ItxzfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543380754432-jnh4gdspl7jdvb9nic98gofiv0hrd4o9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
