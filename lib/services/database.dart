@@ -67,14 +67,88 @@ class DatabaseService {
     return map;
     }
   Future getallEmployee() async{
-    var x = await userCollection.get();
 
-    //print(x.data.doc);
-    //print(x.data.doc.length);
+    var snap = await FirebaseFirestore.instance.collection('users')
+    .where('name', isEqualTo: "admin")
+    .get();
+    snap.docs.forEach((element) {
+      print(element.id);
+    });
+    /*
+    FirebaseFirestore.instance.collection('users')
+    .where('name', isEqualTo: "admin")
+    .get()
+    .then((querySnapshot){
+      querySnapshot.docs.forEach((documentSnapshot) {
+        print(documentSnapshot.id);
+      });
+    });*/
+
+  }
+
+  Future getdetails(String date) async{
+    var id;
+    var snap = await FirebaseFirestore.instance.collection('users')
+    .where('userId', isEqualTo: date)
+    .get();
+    print(snap);
+    print(snap.size);
+    snap.docs.forEach((element) {
+      print(element.id);
+      id = element.id;
+    });
+
+    return id;
+    
+    /*
+    return FirebaseFirestore.instance.collection('users')
+    .where('userId', isEqualTo: uid)
+    .get()
+    .then((querySnapshot){
+      querySnapshot.docs.forEach((documentSnapshot) {
+        return documentSnapshot.id;
+        
+      });
+    });*/
 
   }
 
 
+Future getAttendenceDetails(String date) async{
+    var id;
+    List<DocumentSnapshot> ds = new List();
+    List<String> names = new List();
+    var snapTotalUser = await FirebaseFirestore.instance.collection('users')
+    .where('access', isEqualTo: 'non-admin')
+    .get();
+    int totalUserCount = snapTotalUser.size;
+
+    var snap = await FirebaseFirestore.instance.collection('attendence').doc("data").collection(date)
+    .get();
+    print(snap);
+    int totalUserSent = snap.size;
+    int remainingUser = totalUserCount - totalUserSent;
+    snap.docs.forEach((element) {
+      print(element.id);
+      id = element.id;
+      names.add(id.toString());
+    });
+    snapTotalUser.docs.forEach((element) {
+      if (!names.contains(element.data()['userId'])){
+        print(element.data()['name']);
+        ds.add(element);
+      }
+    });
+    return ds;
+}
+  Future updateUserDataByAdmin(String eid, String userId, String name, String project, String access) async {
+    return await userCollection.doc(eid).set({
+      'userId' : userId,
+      'name' : name,
+      'project' : project,
+      'access' : access,
+    });
+  }
   
   // get user stream
   Stream<QuerySnapshot> get users {

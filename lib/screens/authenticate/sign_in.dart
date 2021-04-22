@@ -26,20 +26,11 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.brown[100],
+      backgroundColor: Colors.blue[200],
       appBar: AppBar(
-        backgroundColor: Colors.brown[400],
+        backgroundColor: Colors.blue[400],
         elevation: 0.0,
-        title: Text('SignIn to TimeSheet Manager'),
-        actions: <Widget>[
-          TextButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('Register'),
-              onPressed: (){
-                widget.toggleView();
-              }
-          )
-        ],
+        title: Text('Log In'),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),

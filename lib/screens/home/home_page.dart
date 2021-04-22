@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:timesheet/screens/authenticate/register.dart';
+import 'package:timesheet/services/add_holiday.dart';
+import 'package:timesheet/services/auth.dart';
+import 'package:timesheet/services/try.dart';
+import 'package:timesheet/services/view_attendenc.dart';
 import 'package:timesheet/services/view_employee.dart';
 
 class AdminHome extends StatefulWidget {
@@ -10,6 +14,7 @@ class AdminHome extends StatefulWidget {
 }
 
 class _AdminHomeState extends State<AdminHome> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,6 +22,19 @@ class _AdminHomeState extends State<AdminHome> {
         body: SafeArea(
           child: Container(
             child: Column(children: [
+              Container(
+                child: Row(
+                children: [
+                  SizedBox(
+                    width: 340
+                  ),
+                  IconButton(
+                    onPressed: ()async{
+                      await _auth.signOut();
+                    },
+                    icon: Icon(Icons.logout),)
+                ],)
+              ),
               SizedBox(
                 height: 200,
                 width: 350,
@@ -25,7 +43,7 @@ class _AdminHomeState extends State<AdminHome> {
                     Padding(
                       padding: const EdgeInsets.only(top: 80),
                       child: Text(
-                        'Good Evening',
+                        'Welcome',
                         style: TextStyle(fontSize: 12.0, color: Colors.black87),
                       ),
                     ),
@@ -46,6 +64,11 @@ class _AdminHomeState extends State<AdminHome> {
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
                       print('Card tapped.');
+                      Navigator.of(context)
+                      .push( MaterialPageRoute(
+                              builder: (context) => AddHoliday()
+                          )
+                      );
                     },
                     child: SizedBox(
                       width: 350,
@@ -142,6 +165,11 @@ class _AdminHomeState extends State<AdminHome> {
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
                       print('Card tapped.');
+                      Navigator.of(context)
+                      .push( MaterialPageRoute(
+                              builder: (context) => ViewAttendence1()
+                          )
+                      );
                     },
                     child: SizedBox(
                       width: 350,

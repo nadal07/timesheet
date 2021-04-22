@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timesheet/services/auth.dart';
 import 'package:timesheet/shared/constants.dart';
 import 'package:timesheet/shared/loading.dart';
+import 'package:toast/toast.dart';
 
 
 class Register extends StatefulWidget {
@@ -95,6 +96,10 @@ class _RegisterState extends State<Register> {
                               error = 'please supply a valid email';
                               loading = false;
                             });
+                          } else {
+                            showToast("SUCCESS!!!");
+                            Navigator.of(context)
+                            .pop();
                           }
                         }
                       }
@@ -109,5 +114,8 @@ class _RegisterState extends State<Register> {
       ),
           ])
     );
+  }
+  void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: Toast.BOTTOM);
   }
 }

@@ -57,7 +57,15 @@ class _HomePage1State extends State<HomePage1> {
   }
 
   List<String> date_list = List(7);
+  List<bool> selected = [true, true, true, true, true, false, false];
 
+  /*
+  setSelectedRadio(int val, int index){
+    setState(() {
+      selected[index] = val;
+    });
+  }*/
+  
   @override
   Widget build(BuildContext context) {
     final users = Provider.of<MyUser>(context);
@@ -171,7 +179,9 @@ class _HomePage1State extends State<HomePage1> {
                                     IconButton(
                                       icon: new Icon(Icons.laptop),
                                       color: Colors.black26,
-                                      onPressed: () {showTimePicker(
+                                      onPressed: () {
+                                        if (selected[index]){
+                                        showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now())
                                           .then((selectedTime1) {
@@ -189,12 +199,13 @@ class _HomePage1State extends State<HomePage1> {
                                           //_inTime = selectedTime.toString().substring(10, 15);
                                           });
                                         }
-                                      });},
+                                      });}},
                                     ),
                                     Container(
                                         width: 50.0,
                                         height: 48.0,
                                         child: TextField(
+                                          readOnly: !selected[index],
                                             controller: _controllers1[index],
                                             style: TextStyle(
                                                 fontSize: 15.0,
@@ -206,7 +217,11 @@ class _HomePage1State extends State<HomePage1> {
                                     IconButton(
                                       icon: new Icon(Icons.time_to_leave),
                                       color: Colors.black26,
-                                      onPressed: () {showTimePicker(
+                                      onPressed: () {
+                                        if (selected[index]){
+
+                                        
+                                        showTimePicker(
                                           context: context,
                                           initialTime: TimeOfDay.now())
                                           .then((selectedTime) {
@@ -224,12 +239,13 @@ class _HomePage1State extends State<HomePage1> {
                                           //_inTime = selectedTime.toString().substring(10, 15);
                                         });
                                         }
-                                      });},
+                                      });}},
                                     ),
                                     Container(
                                         width: 50.0,
                                         height: 48.0,
                                         child: TextField(
+                                            readOnly: !selected[index],
                                             controller: _controllers2[index],
                                             style: TextStyle(
                                                 fontSize: 15.0,
@@ -239,10 +255,19 @@ class _HomePage1State extends State<HomePage1> {
                                         )
                                     )]
                               ),
-                              trailing: IconButton(
-                                icon: new Icon(Icons.time_to_leave),
-                                color: Colors.black26,
-                                onPressed: () {},
+                              trailing: Checkbox(
+                                value: selected[index],
+                                
+                                activeColor: Colors.blue,
+                               onChanged: (val){
+                                 print("pressed");
+                                //setSelectedRadio(val, index);
+                                setState(() {
+                                  selected[index] = val;
+                                });
+                                
+                                 
+                               },
                               ),
                             )
                         );
@@ -276,7 +301,15 @@ class _HomePage1State extends State<HomePage1> {
     print("hello");
     for (int i = 0; i< 7; i++){
       var dates = firstDayOfWeek.add(Duration(days: i));
-      date_list[i] = dates.year.toString()+"-"+dates.month.toString()+'-'+dates.day.toString();
+      String mid1 = '-0';
+      String mid2 = '-0';
+      if (dates.month > 9){
+        mid1 = '-';
+      }
+      if (dates.day > 9){
+        mid2 = '-';
+      }
+      date_list[i] = dates.year.toString()+mid1+dates.month.toString()+mid2+dates.day.toString();
     }
     for (int i=0; i< 7;i++){
       print(date_list[i]);
@@ -298,7 +331,15 @@ class _HomePage1State extends State<HomePage1> {
     print("hello");
     for (int i = 0; i< 7; i++){
       var dates = firstDayOfPreviousWeek.add(Duration(days: i));
-      date_list[i] = dates.year.toString()+"-"+dates.month.toString()+'-'+dates.day.toString();
+      String mid1 = '-0';
+      String mid2 = '-0';
+      if (dates.month > 9){
+        mid1 = '-';
+      }
+      if (dates.day > 9){
+        mid2 = '-';
+      }
+      date_list[i] = dates.year.toString()+mid1+dates.month.toString()+mid2+dates.day.toString();
     }
     for (int i=0; i< 7;i++){
       print(date_list[i]);

@@ -19,7 +19,7 @@ class Profile extends StatelessWidget {
           elevation: 0.0,
           actions: <Widget>[
             TextButton.icon(
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.logout),
                 label: Text('logout'),
               onPressed: () async{
                   Navigator.of(context)
