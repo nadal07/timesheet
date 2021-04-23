@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
-class AddHoliday extends StatefulWidget {
+class AddLeave extends StatefulWidget {
+  final String userId;
+  const AddLeave(this.userId);
   @override
-  _AddHolidayState createState() => _AddHolidayState();
+  _AddLeaveState createState() => _AddLeaveState();
 }
 
-class _AddHolidayState extends State<AddHoliday> {
+class _AddLeaveState extends State<AddLeave> {
   TextEditingController namecontroller;
+
   String dateFormat(DateTime dates){
     String mid1 = '-0';
       String mid2 = '-0';
@@ -38,12 +40,12 @@ class _AddHolidayState extends State<AddHoliday> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[200],
-      appBar: AppBar(
-        title: Text('Add Holiday'),
+          appBar: AppBar(
+        title: Text('Add Leave'),
         backgroundColor: Colors.blue[400],
         elevation: 0.0,
       ),
-      body: Container(
+          body: Container(
         child: Column(
           children: [
             SizedBox(
@@ -86,24 +88,19 @@ class _AddHolidayState extends State<AddHoliday> {
       ),
     );
   }
-  void sendData() async{
+  void sendData() {
     print("hii ho");
-    var snapTotalUser = await FirebaseFirestore.instance.collection('users')
-    .where('access', isEqualTo: 'non-admin')
-    .get();
     DocumentReference fstore =
         FirebaseFirestore.instance.collection('attendence').doc('data');
-     snapTotalUser.docs.forEach((element) {
-        fstore.collection(namecontroller.text).doc(element.data()['userId']).set({
+        fstore.collection(namecontroller.text).doc(widget.userId).set({
         "log_in": "00:00",
         "log_out": "00:00",
         "on_leave": "yes",
-        "remark":"holiday"
+        "remark":"onLeave"
         }).then((_) {
           showToast("Success");
           print("success");
         });
-     });
   }
 void showToast(String msg, {int duration, int gravity}) {
     Toast.show(msg, context, duration: duration, gravity: Toast.BOTTOM);

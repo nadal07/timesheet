@@ -58,6 +58,7 @@ class _HomePage1State extends State<HomePage1> {
 
   List<String> date_list = List(7);
   List<bool> selected = [true, true, true, true, true, false, false];
+  List<String> remark = ["", "", "", "", "","weekend", "weekend"];
 
   /*
   setSelectedRadio(int val, int index){
@@ -97,8 +98,10 @@ class _HomePage1State extends State<HomePage1> {
           elevation: 0.0,
           actions: <Widget>[
             TextButton.icon(
-                icon: Icon(Icons.person),
-                label: Text('Profile'),
+                icon: Icon(Icons.person,
+                color:  Colors.white,),
+                label: Text('Profile',
+                style: TextStyle(color: Colors.white),),
                 onPressed: () {
                   print("pressed");
                   Navigator.of(context)
@@ -153,10 +156,20 @@ class _HomePage1State extends State<HomePage1> {
                             _controllers1[i].text =
                                 mydata[date_list[i].toString()]['log_in'];
                           }
+                          for( var i =0; i < 5;i++){
+                            if (mydata[date_list[i].toString()]['on_leave'] == 'yes'){
+                              selected[i] = false;
+                              remark[i] = mydata[date_list[i].toString()]['remark'];
+                            } else {
+                              selected[i] = true;
+                              remark[i] = '';
+                            }
+                        }
                         }
                         notloaded = false;
 
-                        mydata[date_list[0].toString()]['outTime'] = "23:10";
+                        
+                        //mydata[date_list[0].toString()]['outTime'] = "23:10";
                         return ListView.builder(
                             padding: const EdgeInsets.all(8),
                             itemCount: date_list.length,
@@ -260,7 +273,13 @@ class _HomePage1State extends State<HomePage1> {
                                           style: TextStyle(
                                               fontSize: 15.0,
                                               height: 2.0,
-                                              color: Colors.black)))
+                                              color: Colors.black))),
+                                    SizedBox(
+                                      width:20
+                                    ),
+                                    SizedBox(
+                                      child:Container(child: Text(remark[index]),)
+                                    )
                                 ]),
                                 trailing: Checkbox(
                                   value: selected[index],
@@ -286,7 +305,7 @@ class _HomePage1State extends State<HomePage1> {
           },
           label: const Text('Send'),
           icon: const Icon(Icons.send),
-          backgroundColor: Colors.pink,
+          backgroundColor: Colors.blue[400],
         ),
       ),
     );
@@ -363,14 +382,18 @@ class _HomePage1State extends State<HomePage1> {
     DocumentReference fstore =
         FirebaseFirestore.instance.collection('attendence').doc('data');
     for (int i = 0; i < 7; i++) {
-      fstore.collection(date_list[i]).doc(userID).set({
+      if (selected[i]){
+        fstore.collection(date_list[i]).doc(userID).set({
         "log_in": _controllers1[i].text,
         "log_out": _controllers2[i].text,
-        "on_leave": "false",
-      }).then((_) {
-        showToast("Success");
-        print("success");
-      });
+        "on_leave": "no",
+        "remark":remark[i]
+        }).then((_) {
+          showToast("Success");
+          print("success");
+        });
+      }
+      
     }
   }
 

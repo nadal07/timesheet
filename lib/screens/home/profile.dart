@@ -12,23 +12,12 @@ class Profile extends StatelessWidget {
     return StreamProvider<QuerySnapshot>.value(
       value: DatabaseService().users,
       child: Scaffold(
-        backgroundColor: Colors.brown[50],
+        backgroundColor: Colors.blue[200],
         appBar: AppBar(
           title: Text('Profile'),
-          backgroundColor: Colors.brown[400],
+          backgroundColor: Colors.blue[400],
           elevation: 0.0,
-          actions: <Widget>[
-            TextButton.icon(
-                icon: Icon(Icons.logout),
-                label: Text('logout'),
-              onPressed: () async{
-                  Navigator.of(context)
-                    .pop();
-                  await _auth.signOut();
-
-              }
-            )
-          ],
+          
         ),
         body: UserList(),
       ),

@@ -58,6 +58,10 @@ flutter:
   assets:
      - load_json/data.json
      - images/home_page.jpeg
+     - images/view.png
+     - images/emp.png
+     - images/attend.png
+     - images/holi.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

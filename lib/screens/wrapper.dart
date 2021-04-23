@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:timesheet/models/user.dart';
 import 'package:timesheet/screens/authenticate/authenticate.dart';
 import 'package:timesheet/screens/home/home.dart';
+import 'package:timesheet/screens/home/home_emp.dart';
 import 'package:timesheet/screens/home/home_page_reading_from_json.dart';
 import 'package:timesheet/screens/home/profile.dart';
 import 'package:timesheet/services/view_employee.dart';
@@ -30,7 +31,7 @@ class Wrapper extends StatelessWidget {
             if(x['access'].toString() == 'admin'){
               return AdminHome(x['name'].toString());
             } else {
-              return HomePage1(x['userId'].toString());
+              return EmpHome(x['name'].toString(), x['userId'].toString());
             }
           }
           return Loading();

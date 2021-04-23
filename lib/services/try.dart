@@ -8,6 +8,7 @@ import 'package:timesheet/services/database.dart';
 import 'package:timesheet/services/employee_details.dart';
 import 'package:timesheet/shared/loading.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
+import 'package:toast/toast.dart';
 
 class ViewAttendence1 extends StatefulWidget {
   @override
@@ -110,6 +111,7 @@ class _ViewAttendence1State extends State<ViewAttendence1> {
                           print(path);
                           await GenExcel().create(date_list, path);
                           print("done");
+                          showToast("Excel Generated");
                         }, icon: Icon(Icons.save_sharp))),
               ),
             ],
@@ -171,16 +173,28 @@ class _ViewAttendence1State extends State<ViewAttendence1> {
       ),
     );
   }
-  int currentWeekDateRange(){
+    int currentWeekDateRange() {
     var d = DateTime.now();
     var weekDay = d.weekday;
     var firstDayOfWeek = d.subtract(Duration(days: weekDay - 1));
     print("hello");
-    for (int i = 0; i< 7; i++){
+    for (int i = 0; i < 7; i++) {
       var dates = firstDayOfWeek.add(Duration(days: i));
-      date_list[i] = dates.year.toString()+"-"+dates.month.toString()+'-'+dates.day.toString();
+      String mid1 = '-0';
+      String mid2 = '-0';
+      if (dates.month > 9) {
+        mid1 = '-';
+      }
+      if (dates.day > 9) {
+        mid2 = '-';
+      }
+      date_list[i] = dates.year.toString() +
+          mid1 +
+          dates.month.toString() +
+          mid2 +
+          dates.day.toString();
     }
-    for (int i=0; i< 7;i++){
+    for (int i = 0; i < 7; i++) {
       print(date_list[i]);
     }
     print("wello");
@@ -192,22 +206,39 @@ class _ViewAttendence1State extends State<ViewAttendence1> {
     }*/
     return 0;
   }
-  int previousWeekDateRange(){
+
+  int previousWeekDateRange() {
     var d = DateTime.now();
     var weekDay = d.weekday;
     var firstDayOfWeek = d.subtract(Duration(days: weekDay - 1));
     var firstDayOfPreviousWeek = firstDayOfWeek.subtract(Duration(days: 7));
     print("hello");
-    for (int i = 0; i< 7; i++){
+    for (int i = 0; i < 7; i++) {
       var dates = firstDayOfPreviousWeek.add(Duration(days: i));
-      date_list[i] = dates.year.toString()+"-"+dates.month.toString()+'-'+dates.day.toString();
+      String mid1 = '-0';
+      String mid2 = '-0';
+      if (dates.month > 9) {
+        mid1 = '-';
+      }
+      if (dates.day > 9) {
+        mid2 = '-';
+      }
+      date_list[i] = dates.year.toString() +
+          mid1 +
+          dates.month.toString() +
+          mid2 +
+          dates.day.toString();
     }
-    for (int i=0; i< 7;i++){
+    for (int i = 0; i < 7; i++) {
       print(date_list[i]);
     }
     print("picka");
     var lastDayOfWeek = firstDayOfPreviousWeek.add(Duration(days: 6));
     print(lastDayOfWeek);
+
     return 0;
+  }
+  void showToast(String msg, {int duration, int gravity}) {
+    Toast.show(msg, context, duration: duration, gravity: Toast.BOTTOM);
   }
 }

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:timesheet/screens/authenticate/register.dart';
+import 'package:timesheet/screens/home/home_page_reading_from_json.dart';
 import 'package:timesheet/services/add_holiday.dart';
+import 'package:timesheet/services/add_leave.dart';
 import 'package:timesheet/services/auth.dart';
 import 'package:timesheet/services/try.dart';
 import 'package:timesheet/services/view_attendenc.dart';
 import 'package:timesheet/services/view_employee.dart';
 
-class AdminHome extends StatefulWidget {
+class EmpHome extends StatefulWidget {
   final String userName;
-  const AdminHome(this.userName);
+  final String userId;
+  const EmpHome(this.userName, this.userId);
   @override
-  _AdminHomeState createState() => _AdminHomeState();
+  _EmpHomeState createState() => _EmpHomeState();
 }
 
-class _AdminHomeState extends State<AdminHome> {
+class _EmpHomeState extends State<EmpHome> {
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
@@ -23,21 +26,24 @@ class _AdminHomeState extends State<AdminHome> {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("images/home_page.jpeg"), fit: BoxFit.fill),
+                image: AssetImage("images/home_page.jpeg"),
+                fit: BoxFit.fill
+              ),
             ),
             child: Column(children: [
               Container(
-                  child: Row(
+                child: Row(
                 children: [
-                  SizedBox(width: 340),
+                  SizedBox(
+                    width: 340
+                  ),
                   IconButton(
-                    onPressed: () async {
+                    onPressed: ()async{
                       await _auth.signOut();
                     },
-                    icon: Icon(Icons.logout),
-                  )
-                ],
-              )),
+                    icon: Icon(Icons.logout),)
+                ],)
+              ),
               SizedBox(
                 height: 200,
                 width: 350,
@@ -67,8 +73,11 @@ class _AdminHomeState extends State<AdminHome> {
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
                       print('Card tapped.');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AddHoliday()));
+                      Navigator.of(context)
+                      .push( MaterialPageRoute(
+                              builder: (context) => AddLeave(widget.userId)
+                          )
+                      );
                     },
                     child: SizedBox(
                       width: 350,
@@ -81,13 +90,12 @@ class _AdminHomeState extends State<AdminHome> {
                                   image: AssetImage("images/holi.jpg"),
                                   fit: BoxFit.fill),
                             ),
-                            
                             child: const SizedBox(width: 80, height: 80),
                           ),
                           Column(
                             children: [
-                              getTitle("ADD HOLIDAYS"),
-                              getSub('Add public holidays only.'),
+                              getTitle("ADD LEAVE       "),
+                              getSub('Add One leave at a time.'),
                             ],
                           ),
                         ],
@@ -102,76 +110,12 @@ class _AdminHomeState extends State<AdminHome> {
                     splashColor: Colors.blue.withAlpha(30),
                     onTap: () {
                       print('Card tapped.');
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => Register()));
-                    },
-                    child: SizedBox(
-                      width: 350,
-                      height: 80,
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("images/emp.png"),
-                                  fit: BoxFit.fill),
-                            ),
-                            child: const SizedBox(width: 80, height: 80),
-                          ),
-                          Column(
-                            children: [
-                              getTitle("ADD EMPLOYEE"),
-                              getSub('Add new employee.           '),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Center(
-                child: Card(
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      print('Card tapped.');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewEmployee()));
-                    },
-                    child: SizedBox(
-                      width: 350,
-                      height: 80,
-                      child: Row(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("images/view.png"),
-                                  fit: BoxFit.fill),
-                            ),
-                            child: const SizedBox(width: 80, height: 80),
-                          ),
-                          Column(
-                            children: [
-                              getTitle("VIEW EMPLOYEE"),
-                              getSub('View registered employee.'),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Center(
-                child: Card(
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      print('Card tapped.');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ViewAttendence1()));
+                      Navigator.of(context)
+                          .push(
+                          MaterialPageRoute(
+                              builder: (context) => HomePage1(widget.userId)
+                          )
+                      );
                     },
                     child: SizedBox(
                       width: 350,
@@ -188,8 +132,8 @@ class _AdminHomeState extends State<AdminHome> {
                           ),
                           Column(
                             children: [
-                              getTitle("VIEW ATTENDENCE"),
-                              getSub('View employee attendence.'),
+                              getTitle("SEND TIMESHEET"),
+                              getSub('Send the timesheet               '),
                             ],
                           ),
                         ],
@@ -198,6 +142,7 @@ class _AdminHomeState extends State<AdminHome> {
                   ),
                 ),
               ),
+              
             ]),
           ),
         ));

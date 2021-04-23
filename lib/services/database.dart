@@ -39,8 +39,10 @@ class DatabaseService {
   Future getAttendanceDetails(List<String> dateList, String userID) async{
     Map<String, Map> map = Map();
     Map<String, String> black = {
-        "log_in":"10:00",
-        "log_out":"23:59"
+        "log_in":"00:00",
+        "log_out":"00:00",
+        "on_leave":"no",
+        "remark":""
     };
     List<String> date = List(7);
     List<Map> data = List(7);
@@ -122,7 +124,8 @@ Future getAttendenceDetails(String date) async{
     .where('access', isEqualTo: 'non-admin')
     .get();
     int totalUserCount = snapTotalUser.size;
-
+    print("@#@#@#@#@#@#");
+    print(date);
     var snap = await FirebaseFirestore.instance.collection('attendence').doc("data").collection(date)
     .get();
     print(snap);

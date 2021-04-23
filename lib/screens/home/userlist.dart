@@ -31,15 +31,17 @@ class _UserListState extends State<UserList> {
                       title: Text(
                         'Name',
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          
                         ),
                       ),
                       subtitle: Text(
                         x['name'].toString(),
                         style: TextStyle(
                           fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -48,15 +50,17 @@ class _UserListState extends State<UserList> {
                       title: Text(
                         'id',
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          
                         ),
                       ),
                       subtitle: Text(
                         x['userId'].toString(),
                         style: TextStyle(
                           fontSize: 18,
+                          color:  Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -65,15 +69,17 @@ class _UserListState extends State<UserList> {
                       title: Text(
                         'Project',
                         style: TextStyle(
-                          color: Colors.blueAccent,
+                          color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          
                         ),
                       ),
                       subtitle: Text(
                         x['project'].toString(),
                         style: TextStyle(
                           fontSize: 18,
+                          color:  Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
