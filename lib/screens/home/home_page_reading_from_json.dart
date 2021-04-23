@@ -90,222 +90,228 @@ class _HomePage1State extends State<HomePage1> {
 
     return StreamProvider<QuerySnapshot>.value(
       value: DatabaseService().users,
-      child: Scaffold(
-        backgroundColor: Colors.blue[200],
-        appBar: AppBar(
-          title: Text('TimeSheet Manager'),
-          backgroundColor: Colors.blue[400],
-          elevation: 0.0,
-          actions: <Widget>[
-            TextButton.icon(
-                icon: Icon(Icons.person,
-                color:  Colors.white,),
-                label: Text('Profile',
-                style: TextStyle(color: Colors.white),),
-                onPressed: () {
-                  print("pressed");
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Profile()));
-                })
-          ],
-        ),
-        body: Column(
-          children: [
-            DropdownButton<String>(
-              value: dropdownValue,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 24,
-              elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
-              underline: Container(
-                height: 2,
-                color: Colors.deepPurpleAccent,
-              ),
-              onChanged: (String newValue) {
-                print(newValue);
-                setState(() {
-                  olddropdownValue = dropdownValue;
-                  dropdownValue = newValue;
-                });
-              },
-              items: <String>['Current Week', 'Previous Week']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            Expanded(
-                child: FutureBuilder(
-                    future: DatabaseService()
-                        .getAttendanceDetails(date_list, widget.userName),
-                    builder: (context, snapshot) {
-                      mydata = snapshot.data;
-                      print(snapshot.data);
-                      if (mydata != null &&
-                          mydata[date_list[0].toString()] != null) {
-                        //var mydata = json.decode(snapshot.data.toString());
-                        print("hello");
-                        print(date_list[0].toString());
-                        print(mydata[date_list[0].toString()]['log_out']);
-                        if (notloaded) {
-                          for (var i = 0; i < 7; i++) {
-                            _controllers2[i].text =
-                                mydata[date_list[i].toString()]['log_out'];
-                            _controllers1[i].text =
-                                mydata[date_list[i].toString()]['log_in'];
-                          }
-                          for( var i =0; i < 5;i++){
-                            if (mydata[date_list[i].toString()]['on_leave'] == 'yes'){
-                              selected[i] = false;
-                              remark[i] = mydata[date_list[i].toString()]['remark'];
-                            } else {
-                              selected[i] = true;
-                              remark[i] = '';
-                            }
-                        }
-                        }
-                        notloaded = false;
-
-                        
-                        //mydata[date_list[0].toString()]['outTime'] = "23:10";
-                        return ListView.builder(
-                            padding: const EdgeInsets.all(8),
-                            itemCount: date_list.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              //textFieldControllers[index] = new TextEditingController() ;
-                              //_controllers.add(new TextEditingController(text: '00:00'));
-                              return Card(
-                                  child: ListTile(
-                                title: Text(
-                                  '${date_list[index]}',
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.blueAccent,
-                                  ),
-                                ),
-                                subtitle: Row(children: [
-                                  IconButton(
-                                    icon: new Icon(Icons.laptop),
-                                    color: Colors.black26,
-                                    onPressed: () {
-                                      if (selected[index]) {
-                                        showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now())
-                                            .then((selectedTime1) {
-                                          if (selectedTime1 != null) {
-                                            //textFieldControllers[index].text = selectedTime.toString().substring(10, 15);
-                                            mydata[date_list[index].toString()]
-                                                    ['log_in'] =
-                                                selectedTime1
-                                                    .toString()
-                                                    .substring(10, 15);
-                                            _controllers1[index].text =
-                                                selectedTime1
-                                                    .toString()
-                                                    .substring(10, 15);
-                                            print("i am here");
-                                            print(selectedTime1);
-                                            setState(() {
-                                              //_controller.text = selectedTime.toString().substring(10, 15);
-                                              print(selectedTime1
-                                                  .toString()
-                                                  .substring(10, 15));
-                                              //_inTime = selectedTime.toString().substring(10, 15);
-                                            });
-                                          }
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Container(
-                                      width: 50.0,
-                                      height: 48.0,
-                                      child: TextField(
-                                          readOnly: !selected[index],
-                                          controller: _controllers1[index],
-                                          style: TextStyle(
-                                              fontSize: 15.0,
-                                              height: 2.0,
-                                              color: Colors.black))),
-                                  IconButton(
-                                    icon: new Icon(Icons.time_to_leave),
-                                    color: Colors.black26,
-                                    onPressed: () {
-                                      if (selected[index]) {
-                                        showTimePicker(
-                                                context: context,
-                                                initialTime: TimeOfDay.now())
-                                            .then((selectedTime) {
-                                          if (selectedTime != null) {
-                                            //textFieldControllers[index].text = selectedTime.toString().substring(10, 15);
-                                            _controllers2[index].text =
-                                                selectedTime
-                                                    .toString()
-                                                    .substring(10, 15);
-                                            mydata[date_list[index].toString()]
-                                                    ['log_out'] =
-                                                selectedTime
-                                                    .toString()
-                                                    .substring(10, 15);
-                                            print("i am here");
-                                            print(selectedTime);
-                                            setState(() {
-                                              //_controller.text = selectedTime.toString().substring(10, 15);
-                                              print(selectedTime
-                                                  .toString()
-                                                  .substring(10, 15));
-                                              //_inTime = selectedTime.toString().substring(10, 15);
-                                            });
-                                          }
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  Container(
-                                      width: 50.0,
-                                      height: 48.0,
-                                      child: TextField(
-                                          readOnly: !selected[index],
-                                          controller: _controllers2[index],
-                                          style: TextStyle(
-                                              fontSize: 15.0,
-                                              height: 2.0,
-                                              color: Colors.black))),
-                                    SizedBox(
-                                      width:20
-                                    ),
-                                    SizedBox(
-                                      child:Container(child: Text(remark[index]),)
-                                    )
-                                ]),
-                                trailing: Checkbox(
-                                  value: selected[index],
-                                  activeColor: Colors.blue,
-                                  onChanged: (val) {
-                                    print("pressed");
-                                    //setSelectedRadio(val, index);
-                                    setState(() {
-                                      selected[index] = val;
-                                    });
-                                  },
-                                ),
-                              ));
-                            });
-                      }
-                      return Loading();
-                    }))
-          ],
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-          onPressed: () {
-            sendData();
+      child: new GestureDetector(
+          onTap: (){
+            FocusScope.of(context).requestFocus(new FocusNode());
           },
-          label: const Text('Send'),
-          icon: const Icon(Icons.send),
-          backgroundColor: Colors.blue[400],
+       
+                  child: Scaffold(
+          backgroundColor: Colors.blue[200],
+          appBar: AppBar(
+            title: Text('TimeSheet Manager'),
+            backgroundColor: Colors.blue[400],
+            elevation: 0.0,
+            actions: <Widget>[
+              TextButton.icon(
+                  icon: Icon(Icons.person,
+                  color:  Colors.white,),
+                  label: Text('Profile',
+                  style: TextStyle(color: Colors.white),),
+                  onPressed: () {
+                    print("pressed");
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (context) => Profile()));
+                  })
+            ],
+          ),
+          body: Column(
+              children: [
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.deepPurple),
+                  underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+                  ),
+                  onChanged: (String newValue) {
+          print(newValue);
+          setState(() {
+            olddropdownValue = dropdownValue;
+            dropdownValue = newValue;
+          });
+                  },
+                  items: <String>['Current Week', 'Previous Week']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+                  }).toList(),
+                ),
+                Expanded(
+          child: FutureBuilder(
+              future: DatabaseService()
+                  .getAttendanceDetails(date_list, widget.userName),
+              builder: (context, snapshot) {
+                mydata = snapshot.data;
+                print(snapshot.data);
+                if (mydata != null &&
+                    mydata[date_list[0].toString()] != null) {
+                  //var mydata = json.decode(snapshot.data.toString());
+                  print("hello");
+                  print(date_list[0].toString());
+                  print(mydata[date_list[0].toString()]['log_out']);
+                  if (notloaded) {
+                    for (var i = 0; i < 7; i++) {
+                      _controllers2[i].text =
+                          mydata[date_list[i].toString()]['log_out'];
+                      _controllers1[i].text =
+                          mydata[date_list[i].toString()]['log_in'];
+                    }
+                    for( var i =0; i < 5;i++){
+                      if (mydata[date_list[i].toString()]['on_leave'] == 'yes'){
+                        selected[i] = false;
+                        remark[i] = mydata[date_list[i].toString()]['remark'];
+                      } else {
+                        selected[i] = true;
+                        remark[i] = '';
+                      }
+                  }
+                  }
+                  notloaded = false;
+
+                  
+                  //mydata[date_list[0].toString()]['outTime'] = "23:10";
+                  return ListView.builder(
+                      padding: const EdgeInsets.all(8),
+                      itemCount: date_list.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //textFieldControllers[index] = new TextEditingController() ;
+                        //_controllers.add(new TextEditingController(text: '00:00'));
+                        return Card(
+                            child: ListTile(
+                          title: Text(
+                            '${date_list[index]}',
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                          subtitle: Row(children: [
+                            IconButton(
+                              icon: new Icon(Icons.laptop),
+                              color: Colors.black26,
+                              onPressed: () {
+                                if (selected[index]) {
+                                  showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.now())
+                                      .then((selectedTime1) {
+                                    if (selectedTime1 != null) {
+                                      //textFieldControllers[index].text = selectedTime.toString().substring(10, 15);
+                                      mydata[date_list[index].toString()]
+                                              ['log_in'] =
+                                          selectedTime1
+                                              .toString()
+                                              .substring(10, 15);
+                                      _controllers1[index].text =
+                                          selectedTime1
+                                              .toString()
+                                              .substring(10, 15);
+                                      print("i am here");
+                                      print(selectedTime1);
+                                      setState(() {
+                                        //_controller.text = selectedTime.toString().substring(10, 15);
+                                        print(selectedTime1
+                                            .toString()
+                                            .substring(10, 15));
+                                        //_inTime = selectedTime.toString().substring(10, 15);
+                                      });
+                                    }
+                                  });
+                                }
+                              },
+                            ),
+                            Container(
+                                width: 50.0,
+                                height: 48.0,
+                                child: TextField(
+                                    readOnly: !selected[index],
+                                    controller: _controllers1[index],
+                                    style: TextStyle(
+                                        fontSize: 15.0,
+                                        height: 2.0,
+                                        color: Colors.black))),
+                            IconButton(
+                              icon: new Icon(Icons.time_to_leave),
+                              color: Colors.black26,
+                              onPressed: () {
+                                if (selected[index]) {
+                                  showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.now())
+                                      .then((selectedTime) {
+                                    if (selectedTime != null) {
+                                      //textFieldControllers[index].text = selectedTime.toString().substring(10, 15);
+                                      _controllers2[index].text =
+                                          selectedTime
+                                              .toString()
+                                              .substring(10, 15);
+                                      mydata[date_list[index].toString()]
+                                              ['log_out'] =
+                                          selectedTime
+                                              .toString()
+                                              .substring(10, 15);
+                                      print("i am here");
+                                      print(selectedTime);
+                                      setState(() {
+                                        //_controller.text = selectedTime.toString().substring(10, 15);
+                                        print(selectedTime
+                                            .toString()
+                                            .substring(10, 15));
+                                        //_inTime = selectedTime.toString().substring(10, 15);
+                                      });
+                                    }
+                                  });
+                                }
+                              },
+                            ),
+                            Container(
+                                width: 50.0,
+                                height: 48.0,
+                                child: TextField(
+                                    readOnly: !selected[index],
+                                    controller: _controllers2[index],
+                                    style: TextStyle(
+                                        fontSize: 15.0,
+                                        height: 2.0,
+                                        color: Colors.black))),
+                              SizedBox(
+                                width:20
+                              ),
+                              SizedBox(
+                                child:Container(child: Text(remark[index]),)
+                              )
+                          ]),
+                          trailing: Checkbox(
+                            value: selected[index],
+                            activeColor: Colors.blue,
+                            onChanged: (val) {
+                              print("pressed");
+                              //setSelectedRadio(val, index);
+                              setState(() {
+                                selected[index] = val;
+                              });
+                            },
+                          ),
+                        ));
+                      });
+                }
+                return Loading();
+              }))
+              ],
+            ),
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              sendData();
+            },
+            label: const Text('Send'),
+            icon: const Icon(Icons.send),
+            backgroundColor: Colors.blue[400],
+          ),
         ),
       ),
     );
