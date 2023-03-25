@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://retromusic.app">
+  <a href="">
     <img src="assets\images\icon.png" height="128">
     <h1 align="center">TimeSheet</h1>
   </a>
