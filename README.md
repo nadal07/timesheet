@@ -1,6 +1,6 @@
 <p align="center">
   <a href="">
-    <img src="assets\images\icon.png" height="128">
+    <img src="images\ic_launcher.png" height="128">
     <h1 align="center">TimeSheet</h1>
   </a>
 </p>
